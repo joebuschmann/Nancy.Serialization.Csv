@@ -41,8 +41,8 @@
     <Compile Include="ModelBinding\CsvDeserializer.cs" />
     <Compile Include="Negotiation\CsvProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Responses\CsvResponse.cs" />
-    <Compile Include="Serialization\CsvSerializer.cs" />
+    <Compile Include="Negotiation\CsvResponse.cs" />
+    <Compile Include="Negotiation\CsvSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

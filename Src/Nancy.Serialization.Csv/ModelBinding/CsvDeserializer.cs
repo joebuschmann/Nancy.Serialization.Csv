@@ -34,13 +34,13 @@ namespace Nancy.Serialization.Csv.ModelBinding
                 return null;
 
             var items = new List<object>();
-            string[] lines = Encoding.UTF8.GetString(ReadAllBytes(bodyStream)).Split('\n');
+            string[] lines = bodyStream.AsString().FixLineEndings().Split('\n');
 
             if (lines.Length > 1)
             {
                 string[] fieldNames = lines[0].Split(',');
 
-                foreach (var line in lines.Skip(1))
+                foreach (var line in lines.Skip(1).Where(l => l.Length > 0))
                 {
                     string[] fieldValues = line.Split(',');
                     object instance = CreateInstance(fieldNames, fieldValues, context.GenericType, context);
@@ -105,22 +105,12 @@ namespace Nancy.Serialization.Csv.ModelBinding
             {
                 try
                 {
-                    
                     property.SetValue(instance, typeConverter.Convert(stringValue, destinationType, context));
                 }
                 catch (Exception e)
                 {
                     throw new PropertyBindingException(property.Name, stringValue, e);
                 }
-            }
-        }
-
-        public byte[] ReadAllBytes(Stream stream)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                stream.CopyTo(memoryStream);
-                return memoryStream.ToArray();
             }
         }
     }
@@ -137,6 +127,25 @@ namespace Nancy.Serialization.Csv.ModelBinding
         public static bool HasDefaultConstructor(this Type type)
         {
             return type.GetConstructor(Type.EmptyTypes) != null;
+        }
+    }
+
+    public static class StringExtensions
+    {
+        public static string FixLineEndings(this string value)
+        {
+            return value.Replace("\r\n", "\n").Replace("\r", "\n");
+        }
+    }
+
+    public static class StreamExtensions
+    {
+        public static string AsString(this Stream stream)
+        {
+            using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
+            {
+                return streamReader.ReadToEnd();
+            }
         }
     }
 }

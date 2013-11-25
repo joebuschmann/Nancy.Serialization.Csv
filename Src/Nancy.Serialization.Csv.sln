@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nancy.Serialization.Csv", "Nancy.Serialization.Csv\Nancy.Serialization.Csv.csproj", "{17AEAEFB-3201-491D-BFBA-23FC1A7AD252}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nancy.Serialization.Csv.Tests", "Nancy.Serialization.Csv.Tests\Nancy.Serialization.Csv.Tests.csproj", "{C7557CF5-1AE5-4D55-A43D-49DD6AA83BCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{17AEAEFB-3201-491D-BFBA-23FC1A7AD252}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17AEAEFB-3201-491D-BFBA-23FC1A7AD252}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17AEAEFB-3201-491D-BFBA-23FC1A7AD252}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7557CF5-1AE5-4D55-A43D-49DD6AA83BCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7557CF5-1AE5-4D55-A43D-49DD6AA83BCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7557CF5-1AE5-4D55-A43D-49DD6AA83BCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7557CF5-1AE5-4D55-A43D-49DD6AA83BCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

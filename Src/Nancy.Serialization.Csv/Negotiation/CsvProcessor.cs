@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Nancy.Responses.Negotiation;
-using Nancy.Serialization.Csv.Responses;
 
 namespace Nancy.Serialization.Csv.Negotiation
 {
