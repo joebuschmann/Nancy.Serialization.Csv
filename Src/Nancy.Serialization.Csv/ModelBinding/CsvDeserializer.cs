@@ -30,11 +30,39 @@ namespace Nancy.Serialization.Csv.ModelBinding
         {
             Type destinationType = context.DestinationType;
 
-            if (!(destinationType.IsArray || destinationType.IsList()) || !context.DestinationType.HasDefaultConstructor())
+            if (!IsValidDestinationType(destinationType))
                 return null;
 
-            var items = new List<object>();
+            object model = null;
             string[] lines = bodyStream.AsString().FixLineEndings().Split('\n');
+
+            if (destinationType.IsList() || destinationType.IsArray)
+                model = BuildCollection(context, lines);
+            else
+                model = BuildInstance(context, lines);
+
+            if (model != null)
+                context.Configuration.BodyOnly = true;
+
+            return model;
+        }
+
+        private object BuildInstance(BindingContext context, string[] lines)
+        {
+            if (lines.Length > 1)
+            {
+                string[] fieldNames = lines[0].Split(',');
+                string[] fieldValues = lines[1].Split(',');
+
+                return CreateInstance(fieldNames, fieldValues, context.DestinationType, context);
+            }
+
+            return null;
+        }
+
+        private object BuildCollection(BindingContext context, string[] lines)
+        {
+            var items = new List<object>();
 
             if (lines.Length > 1)
             {
@@ -48,17 +76,16 @@ namespace Nancy.Serialization.Csv.ModelBinding
                 }
             }
 
-            var list = CreateList(destinationType, items);
-
-            if (list != null)
-                context.Configuration.BodyOnly = true;
+            var list = CreateCollectionInstance(context, items);
 
             return list;
         }
 
-        private object CreateList(Type destinationType, List<object> items)
+        private object CreateCollectionInstance(BindingContext context, List<object> items)
         {
-            if (destinationType.IsList() || destinationType.IsArray)
+            Type destinationType = context.DestinationType;
+
+            if (destinationType.IsList())
             {
                 IList list = (IList)Activator.CreateInstance(destinationType);
 
@@ -68,35 +95,62 @@ namespace Nancy.Serialization.Csv.ModelBinding
                 return list;
             }
 
+            if (destinationType.IsArray)
+            {
+                var array = Array.CreateInstance(destinationType.GetElementType(), items.Count);
+
+                for (int i = 0; i < items.Count; i++)
+                    array.SetValue(items[i], i);
+
+                return array;
+            }
+
             return null;
         }
 
-        private object CreateInstance(string[] fieldNames, string[] fieldValues, Type genericType, BindingContext context)
+        private object CreateInstance(string[] fieldNames, string[] fieldValues, Type type, BindingContext context)
         {
-            object instance = Activator.CreateInstance(genericType);
+            object instance = Activator.CreateInstance(type);
 
             for (int i = 0; i < fieldNames.Length && i < fieldValues.Length; i++)
             {
                 string propertyName = fieldNames[i].Replace(" ", "");
                 string propertyValue = fieldValues[i].Trim();
 
-                PropertyInfo property = context.ValidModelProperties.FirstOrDefault(p => p.Name == propertyName);
-
-                if (property != null)
+                if (type.IsDynamicDictionary())
                 {
-                    BindProperty(property, propertyValue, context, instance);
+                    BindDynamicProperty(propertyName, propertyValue, instance);
+                }
+                else
+                {
+                    BindProperty(propertyName, propertyValue, context, instance);
                 }
             }
 
             return instance;
         }
 
-        private static void BindProperty(PropertyInfo property, string stringValue, BindingContext context, object instance)
+        private void BindDynamicProperty(string propertyName, string propertyValue, object instance)
         {
+            var dynamicDictionary = instance as DynamicDictionary;
+
+            if (dynamicDictionary == null)
+                return;
+
+            dynamicDictionary[propertyName] = propertyValue;
+        }
+
+        private static void BindProperty(string propertyName, string propertyValue, BindingContext context, object instance)
+        {
+            PropertyInfo property = context.ValidModelProperties.FirstOrDefault(p => p.Name == propertyName);
+
+            if (property == null)
+                return;
+
             var destinationType = property.PropertyType;
 
             if (destinationType == typeof (string))
-                property.SetValue(instance, stringValue);
+                property.SetValue(instance, propertyValue);
 
             var typeConverter =
                 context.TypeConverters.FirstOrDefault(c => c.CanConvertTo(destinationType, context));
@@ -105,23 +159,33 @@ namespace Nancy.Serialization.Csv.ModelBinding
             {
                 try
                 {
-                    property.SetValue(instance, typeConverter.Convert(stringValue, destinationType, context));
+                    property.SetValue(instance, typeConverter.Convert(propertyValue, destinationType, context));
                 }
                 catch (Exception e)
                 {
-                    throw new PropertyBindingException(property.Name, stringValue, e);
+                    throw new PropertyBindingException(property.Name, propertyValue, e);
                 }
             }
+        }
+
+        private bool IsValidDestinationType(Type destinationType)
+        {
+            return (destinationType.IsArray || destinationType.HasDefaultConstructor());
         }
     }
 
     public static class TypeExtensions
     {
-        public static bool IsList(this Type source)
+        public static bool IsList(this Type type)
         {
             var listType = typeof(List<>);
 
-            return source.IsGenericType && source.GetGenericTypeDefinition() == listType;
+            return type.IsGenericType && type.GetGenericTypeDefinition() == listType;
+        }
+
+        public static bool IsDynamicDictionary(this Type type)
+        {
+            return type == typeof (DynamicDictionary);
         }
 
         public static bool HasDefaultConstructor(this Type type)

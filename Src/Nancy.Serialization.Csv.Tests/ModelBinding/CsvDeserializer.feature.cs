@@ -102,10 +102,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Validate deserialization into a list")]
-        public virtual void ValidateDeserializationIntoAList()
+        [NUnit.Framework.DescriptionAttribute("Validate binding a list")]
+        public virtual void ValidateBindingAList()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validate deserialization into a list", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validate binding a list", ((string[])(null)));
 #line 26
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -132,7 +132,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 27
  testRunner.Given("the CSV data", ((string)(null)), table1, "Given ");
 #line 33
- testRunner.When("it is deserialized into a list object", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("it is deserialized into a list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "First Name",
@@ -156,6 +156,208 @@ this.ScenarioSetup(scenarioInfo);
                         "Female"});
 #line 34
  testRunner.Then("the following items should be in the list", ((string)(null)), table2, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Validate binding to an array")]
+        public virtual void ValidateBindingToAnArray()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validate binding to an array", ((string[])(null)));
+#line 41
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "First Name",
+                        "Last Name",
+                        "Gender"});
+            table3.AddRow(new string[] {
+                        "Liz",
+                        "Lemon",
+                        "Female"});
+            table3.AddRow(new string[] {
+                        "Jack",
+                        "Donaghy",
+                        "Male"});
+            table3.AddRow(new string[] {
+                        "Tracy",
+                        "Jordan",
+                        "Male"});
+            table3.AddRow(new string[] {
+                        "Jenna",
+                        "Maroney",
+                        "Female"});
+#line 42
+ testRunner.Given("the CSV data", ((string)(null)), table3, "Given ");
+#line 48
+ testRunner.When("it is deserialized into an array", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "First Name",
+                        "Last Name",
+                        "Gender"});
+            table4.AddRow(new string[] {
+                        "Liz",
+                        "Lemon",
+                        "Female"});
+            table4.AddRow(new string[] {
+                        "Jack",
+                        "Donaghy",
+                        "Male"});
+            table4.AddRow(new string[] {
+                        "Tracy",
+                        "Jordan",
+                        "Male"});
+            table4.AddRow(new string[] {
+                        "Jenna",
+                        "Maroney",
+                        "Female"});
+#line 49
+ testRunner.Then("the following items should be in the list", ((string)(null)), table4, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Validate binding to an instance")]
+        public virtual void ValidateBindingToAnInstance()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validate binding to an instance", ((string[])(null)));
+#line 56
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "First Name",
+                        "Last Name",
+                        "Gender"});
+            table5.AddRow(new string[] {
+                        "Liz",
+                        "Lemon",
+                        "Female"});
+#line 57
+ testRunner.Given("the CSV data", ((string)(null)), table5, "Given ");
+#line 60
+ testRunner.When("it is deserialized into an instance of Person", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "First Name",
+                        "Last Name",
+                        "Gender"});
+            table6.AddRow(new string[] {
+                        "Liz",
+                        "Lemon",
+                        "Female"});
+#line 61
+ testRunner.Then("the following instance properties should be set", ((string)(null)), table6, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Validate binding to a dynamic dictionary")]
+        public virtual void ValidateBindingToADynamicDictionary()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validate binding to a dynamic dictionary", ((string[])(null)));
+#line 65
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "First Name",
+                        "Last Name",
+                        "Gender"});
+            table7.AddRow(new string[] {
+                        "Liz",
+                        "Lemon",
+                        "Female"});
+            table7.AddRow(new string[] {
+                        "Jack",
+                        "Donaghy",
+                        "Male"});
+            table7.AddRow(new string[] {
+                        "Tracy",
+                        "Jordan",
+                        "Male"});
+            table7.AddRow(new string[] {
+                        "Jenna",
+                        "Maroney",
+                        "Female"});
+#line 66
+ testRunner.Given("the CSV data", ((string)(null)), table7, "Given ");
+#line 72
+ testRunner.When("it is deserialized into a dynamic dictionary list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "First Name",
+                        "Last Name",
+                        "Gender"});
+            table8.AddRow(new string[] {
+                        "Liz",
+                        "Lemon",
+                        "Female"});
+            table8.AddRow(new string[] {
+                        "Jack",
+                        "Donaghy",
+                        "Male"});
+            table8.AddRow(new string[] {
+                        "Tracy",
+                        "Jordan",
+                        "Male"});
+            table8.AddRow(new string[] {
+                        "Jenna",
+                        "Maroney",
+                        "Female"});
+#line 73
+ testRunner.Then("the following items should be in the list", ((string)(null)), table8, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Validate binding to null values")]
+        public virtual void ValidateBindingToNullValues()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validate binding to null values", ((string[])(null)));
+#line 80
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String Value",
+                        "Nullable Int Value",
+                        "Nullable Char Value",
+                        "Nullable Enum Value"});
+            table9.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        ""});
+            table9.AddRow(new string[] {
+                        "Jack Donaghy",
+                        "12",
+                        "L",
+                        "Male"});
+#line 81
+ testRunner.Given("the CSV data", ((string)(null)), table9, "Given ");
+#line 85
+ testRunner.When("it is deserialized into an instance of NullableTypeTester", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String Value",
+                        "Nullable Int Value",
+                        "Nullable Char Value",
+                        "Nullable Enum Value"});
+            table10.AddRow(new string[] {
+                        "",
+                        "",
+                        "",
+                        ""});
+            table10.AddRow(new string[] {
+                        "Jack Donaghy",
+                        "12",
+                        "L",
+                        "Male"});
+#line 86
+ testRunner.Then("the following instance properties should be set", ((string)(null)), table10, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

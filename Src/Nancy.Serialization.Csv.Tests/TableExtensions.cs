@@ -1,6 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using NUnit.Framework;
+using Nancy;
 
 // ReSharper disable CheckNamespace
 namespace TechTalk.SpecFlow
@@ -29,6 +32,29 @@ namespace TechTalk.SpecFlow
             stream.Position = 0;
 
             return stream;
+        }
+
+        internal static void CompareToDynamicSet(this Table table, IEnumerable<DynamicDictionary> items)
+        {
+            var header = table.Header;
+            var list = new List<DynamicDictionary>(items);
+
+            if (table.Rows.Count != list.Count)
+                Assert.Fail("Row count does not equal the item count in the list.");
+
+            for (int i = 0; i < table.Rows.Count; i++)
+            {
+                TableRow row = table.Rows[i];
+                DynamicDictionary dynamicDictionary = list[i];
+
+                foreach (var headerRow in header)
+                {
+                    var expectedValue = row[headerRow];
+                    var actualValue = dynamicDictionary[headerRow.Replace(" ", "")].ToString();
+
+                    Assert.That(actualValue, Is.EqualTo(expectedValue));
+                }
+            }
         }
     }
 }
